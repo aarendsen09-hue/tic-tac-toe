@@ -1,32 +1,47 @@
+const container = document.querySelector(".container");
+const boxes = document.querySelectorAll(".box");
+
 const gameboard = (() => {
     const board = [0,0,0,0,0,0,0,0,0];
 
     const getBoard = () => board;
 
-    const makeMove = (loc, player) => {
+    boxes.forEach(box => {
+        box.addEventListener("click", () => {
+            makeMove(box.dataset.index);
+            renderBoard();
+        })
+    });
+
+    const makeMove = (loc) => {
         let madeMove = false;
-        while (madeMove = false) {
-            if (board[loc].getValue() === 0) {
-                board[loc] = displayController.getActivePlayer.token;
+        while (madeMove == false) {
+            if (board[loc] === 0) {
+                board[loc] = displayController.getActivePlayer().token;
                 madeMove = true;
+                // for (const box of boxes) {
+                //     if (box.dataset.index == loc) {
+                //         box.textContent = board[loc];
+                //     }
+                // }
             }
         }
 
-        const row = Math.trunc(loc / 3);
-        const col = (loc % 3) - 1;
+        let row = Math.trunc(loc / 3);
+        let col = (loc % 3) - 1;
         if (loc % 3 == 0) {
             row = (loc / 3) - 1;
             col = 2;
         }
         var count = 0;
         for (let i = (loc - col); i < (loc - col) + 3; i++) {
-            if (board[i] !== getActivePlayer.token) {
+            if (board[i] !== displayController.getActivePlayer().token) {
                 break;
             }
             count++;
         }
         if (count == 3) {
-            return displayController.endGame(displayController.getActivePlayer);
+            return displayController.endGame(displayController.getActivePlayer());
         }
         count = 0;
         for (let i = (loc - row); i < (loc - row) + 3; i++) {
@@ -36,12 +51,12 @@ const gameboard = (() => {
             count++;
         }
         if (count == 3) {
-            return displayController.endGame(displayController.getActivePlayer);
+            return displayController.endGame(displayController.getActivePlayer());
         }
         count = 0;
         if (board[4] == getActivePlayer.token) {
-            if ((board[1] == getActivePlayer.token && board[9] == getActivePlayer.token) || (board[3] == getActivePlayer.token && board[7] == getActivePlayer.token)) {
-                return displayController.endGame(displayController.getActivePlayer);
+            if ((board[0] == getActivePlayer().token && board[8] == getActivePlayer().token) || (board[2] == getActivePlayer().token && board[6] == getActivePlayer().token)) {
+                return displayController.endGame(displayController.getActivePlayer());
             }
         }
 
@@ -51,10 +66,24 @@ const gameboard = (() => {
             }
         }
         if (count == 9) {
-            return displayController.endGame(tie);
+            return displayController.endGame("tie");
         }
+        displayController.switchPlayerTurn();
     }
-});
+
+    const renderBoard = () => {
+        boxes.forEach(box => {
+            box.textContent = getBoard()[box.dataset.index] || "";
+        });
+    }
+
+
+    return {
+        getBoard,
+        makeMove,
+        renderBoard,
+    };
+})();
 
 const displayController = (() => {
     playerOneName = "Player One";
@@ -80,15 +109,21 @@ const displayController = (() => {
     const getActivePlayer = () => activePlayer;
     // const getPlayerToken = (player) => player.token; 
 
-    const playRound = (loc) => {
-        makeMove(loc, getActivePlayer());
-        
-    }
-
     const endGame = (player) => {
-        if (player = "tie") {
-
+        const result = document.createElement("h1");
+        if (player === "tie") {
+            result.textContent = "Tie!";
         }
+        else {
+            result.textContent = `${player} won!`;
+        }
+        container.appendChild(result);
+
     }
 
-})
+    return {
+        switchPlayerTurn,
+        getActivePlayer,
+        endGame,
+    };
+})();
