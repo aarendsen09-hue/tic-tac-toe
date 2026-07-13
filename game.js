@@ -3,6 +3,7 @@ const boxes = document.querySelectorAll(".box");
 const screen = document.querySelector(".screen");
 const below = document.querySelector(".below");
 const restart = document.querySelector(".restart");
+const result = document.querySelector("h1");
 
 const gameboard = (() => {
     let board = [0,0,0,0,0,0,0,0,0];
@@ -17,9 +18,10 @@ const gameboard = (() => {
         })
     });
 
-    // restart.addEventListener("click", () => {
-
-    // })
+    restart.addEventListener("click", () => {
+        clearBoard();
+        isPlayable = true;
+    })
 
     const makeMove = (loc) => {
         if (isPlayable) {
@@ -75,7 +77,7 @@ const gameboard = (() => {
         });
     }
 
-    const clearBoard = () => {
+    const endGame = () => {
         // board = [0,0,0,0,0,0,0,0,0];
         isPlayable = false;
     //     boxes.forEach(box => {
@@ -83,10 +85,19 @@ const gameboard = (() => {
     // });
     }
 
+    const clearBoard = () => {
+        board = [0,0,0,0,0,0,0,0,0];
+        result.textContent = "";
+        boxes.forEach(box => {
+            box.textContent = "";
+        });
+    }
+
     return {
         getBoard,
         makeMove,
         renderBoard,
+        endGame,
         clearBoard,
     };
 })();
@@ -116,7 +127,6 @@ const displayController = (() => {
     // const getPlayerToken = (player) => player.token; 
 
     const endGame = (player) => {
-        const result = document.createElement("h1");
         if (player === "tie") {
             result.textContent = "Tie!";
         }
@@ -124,7 +134,7 @@ const displayController = (() => {
             result.textContent = `${player.name} won!`;
         }
         below.appendChild(result);
-        gameboard.clearBoard();
+        gameboard.endGame();
         
     }
 

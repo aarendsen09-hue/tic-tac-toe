@@ -80,6 +80,7 @@ button {
     margin: 50px;
 }
 
-.below {
-    display: flex;
+.result {
+    height: 40px;
+    margin: 0;
 }
