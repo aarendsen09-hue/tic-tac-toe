@@ -38,7 +38,7 @@
 .container {
     display: grid;
     grid-template-columns: repeat(3, 150px);
-    height: 500px;
+    height: 450px;
     width: 500px;
     margin: 0;
     padding: 0;
@@ -50,4 +50,36 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+}
+
+div {
+    display: flex;
+    justify-content: center; 
+    align-items: center;    
+    height: 150px;   
+    font-size: large;
+    font-weight: bold;
+}
+
+h1 {
+    align-self: center;
+    justify-self: center;
+    margin: 100px;
+}
+
+.screen {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    background-color: lavenderblush;
+    padding: 10px 35px;
+    border: 5px solid lightpink;
+    border-radius: 15px;
+    margin: 50px;
+}
+
+.below {
+    display: flex;
 }
